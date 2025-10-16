@@ -1,7 +1,7 @@
 package com.metodosageis.personal_finance.service;
 
-import com.metodosageis.personal_finance.model.Categoria;
-import com.metodosageis.personal_finance.repository.CategoriaRepository;
+import com.metodosageis.personal_finance.model.Category;
+import com.metodosageis.personal_finance.repository.CategoryRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -22,17 +22,17 @@ import static org.mockito.Mockito.*;
 class CategoriaServiceTest {
 
     @Mock
-    private CategoriaRepository repository;
+    private CategoryRepository repository;
 
     @InjectMocks
-    private CategoriaService service;
+    private CategoryService service;
 
     @Test
     void deveCriarCategoriaPersonalizada() {
-        Categoria categoria = new Categoria(null, "Educação", 500.0);
-        when(repository.save(any())).thenReturn(new Categoria(1L, "Educação", 500.0));
+        Category categoria = new Category(null, "Educação", 500.0);
+        when(repository.save(any())).thenReturn(new Category(1L, "Educação", 500.0));
 
-        Categoria criada = service.criarCategoria(categoria);
+        Category criada = service.createCategory(categoria);
 
         assertNotNull(criada.getId());
         assertEquals("Educação", criada.getNome());
@@ -44,11 +44,11 @@ class CategoriaServiceTest {
     void deveRetornarCategoriasPreDefinidas() {
 
         when(repository.findAll()).thenReturn(List.of(
-                new Categoria(1L, "Alimentação", 1000.0),
-                new Categoria(2L, "Transporte", 500.0)
+                new Category(1L, "Alimentação", 1000.0),
+                new Category(2L, "Transporte", 500.0)
         ));
 
-        List<Categoria> categorias = service.listarCategorias();
+        List<Category> categorias = service.listCategory();
 
         assertFalse(categorias.isEmpty());
         assertEquals(2, categorias.size());
@@ -57,11 +57,11 @@ class CategoriaServiceTest {
 
     @Test
     void deveAtualizarLimiteDeGastos() {
-        Categoria existente = new Categoria(1L, "Lazer", 300.0);
+        Category existente = new Category(1L, "Lazer", 300.0);
         when(repository.findById(1L)).thenReturn(Optional.of(existente));
         when(repository.save(any())).thenReturn(existente);
 
-        Categoria atualizada = service.atualizarLimite(1L, 600.0);
+        Category atualizada = service.updateLimit(1L, 600.0);
 
         assertEquals(600.0, atualizada.getLimiteGastos());
         verify(repository).save(existente);

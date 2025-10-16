@@ -11,7 +11,7 @@ public class TransactionDTO {
     private Long id;
 
     @NotNull(message = "Valor é obrigatório")
-    private Double value;
+    private Double amount;
 
     @NotNull(message = "Tipo é obrigatório")
     private TransactionType type;

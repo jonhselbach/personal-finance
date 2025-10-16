@@ -27,7 +27,7 @@ public class TransactionService {
 
         Transaction transaction = new Transaction(
                 null,
-                dto.getValue(),
+                dto.getAmount(),
                 dto.getType(),
                 category,
                 dto.getDate(),
@@ -43,7 +43,7 @@ public class TransactionService {
         Category category = categoryRepository.findById(dto.getCategoryId())
                 .orElseThrow(() -> new EntityNotFoundException("Categoria não encontrada"));
 
-        transaction.setAmount(dto.getValue());
+        transaction.setAmount(dto.getAmount());
         transaction.setType(dto.getType());
         transaction.setCategory(category);
         transaction.setDate(dto.getDate());

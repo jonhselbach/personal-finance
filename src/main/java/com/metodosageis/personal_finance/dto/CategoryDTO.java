@@ -1,5 +1,5 @@
 package com.metodosageis.personal_finance.dto;
-import com.metodosageis.personal_finance.model.Categoria;
+import com.metodosageis.personal_finance.model.Category;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -10,13 +10,13 @@ import org.modelmapper.ModelMapper;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CategoriaDTO {
+public class CategoryDTO {
     @NotNull(message = "Id obrigatório")
     private Long id;
     private String nome;
     private Double limiteGastos;
 
-    public Categoria toModel(ModelMapper mapper) {
-        return mapper.map(this, Categoria.class);
+    public Category toModel(ModelMapper mapper) {
+        return mapper.map(this, Category.class);
     }
 }

@@ -1,8 +1,8 @@
 package com.metodosageis.personal_finance.integration;
 
-import com.metodosageis.personal_finance.model.Categoria;
-import com.metodosageis.personal_finance.repository.CategoriaRepository;
-import com.metodosageis.personal_finance.service.CategoriaService;
+import com.metodosageis.personal_finance.model.Category;
+import com.metodosageis.personal_finance.repository.CategoryRepository;
+import com.metodosageis.personal_finance.service.CategoryService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +20,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 class CategoriaIntegrationTest {
 
     @Autowired
-    private CategoriaRepository repository;
+    private CategoryRepository repository;
 
     @Autowired
-    private CategoriaService service;
+    private CategoryService service;
 
     @BeforeEach
     void setUp() {
@@ -32,8 +32,8 @@ class CategoriaIntegrationTest {
 
     @Test
     void deveSalvarCategoriaPersonalizada() {
-        Categoria categoria = new Categoria(null, "EducacaoTeste", 500.0);
-        Categoria salva = service.criarCategoria(categoria);
+        Category categoria = new Category(null, "EducacaoTeste", 500.0);
+        Category salva = service.createCategory(categoria);
 
         assertThat(salva.getId()).isNotNull();
         assertThat(salva.getNome()).isEqualTo("EducacaoTeste");
@@ -43,11 +43,11 @@ class CategoriaIntegrationTest {
     @Test
     void deveListarCategoriasPreDefinidas() {
         // Inserindo categorias únicas para este teste
-        Categoria c1 = new Categoria(null, "AlimentacaoTeste", 1000.0);
-        Categoria c2 = new Categoria(null, "TransporteTeste", 800.0);
+        Category c1 = new Category(null, "AlimentacaoTeste", 1000.0);
+        Category c2 = new Category(null, "TransporteTeste", 800.0);
         repository.saveAll(List.of(c1, c2));
 
-        List<Categoria> categorias = service.listarCategorias();
+        List<Category> categorias = service.listCategory();
 
         assertThat(categorias).hasSize(2);
         assertThat(categorias).extracting("nome")
@@ -56,10 +56,10 @@ class CategoriaIntegrationTest {
 
     @Test
     void deveAtualizarLimiteDeGastos() {
-        Categoria categoria = new Categoria(null, "LazerTeste", 300.0);
-        Categoria salva = repository.save(categoria);
+        Category categoria = new Category(null, "LazerTeste", 300.0);
+        Category salva = repository.save(categoria);
 
-        Categoria atualizada = service.atualizarLimite(salva.getId(), 600.0);
+        Category atualizada = service.updateLimit(salva.getId(), 600.0);
 
         assertThat(atualizada.getLimiteGastos()).isEqualTo(600.0);
     }

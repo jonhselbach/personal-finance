@@ -4,13 +4,11 @@ import com.metodosageis.personal_finance.enums.TransactionType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 @Entity
 @Table(name = "transactions")
 public class Transaction {
@@ -30,4 +28,12 @@ public class Transaction {
     private LocalDate date;
 
     private String description;
+
+    public Transaction(Double amount, TransactionType type, Category category, LocalDate date, String description) {
+        this.amount = amount;
+        this.type = type;
+        this.category = category;
+        this.date = date;
+        this.description = description;
+    }
 }

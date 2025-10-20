@@ -1,6 +1,7 @@
 package com.metodosageis.personal_finance.service;
 
 import com.metodosageis.personal_finance.dto.TransactionDTO;
+import com.metodosageis.personal_finance.dto.TransactionWithBalance;
 import com.metodosageis.personal_finance.model.Category;
 import com.metodosageis.personal_finance.model.Transaction;
 import com.metodosageis.personal_finance.repository.CategoryRepository;
@@ -8,7 +9,12 @@ import com.metodosageis.personal_finance.repository.TransactionRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
+
+import static com.metodosageis.personal_finance.enums.TransactionType.DESPESA;
+import static com.metodosageis.personal_finance.enums.TransactionType.RECEITA;
 
 @Service
 public class TransactionService {
@@ -21,8 +27,8 @@ public class TransactionService {
         this.categoryRepository = categoryRepository;
     }
 
-    public Transaction create(TransactionDTO dto) {
-        Category category = categoryRepository.findById(dto.getIdcategory())
+    public TransactionWithBalance create(TransactionDTO dto) {
+        Category category = categoryRepository.findById(dto.getCategoryId())
                 .orElseThrow(() -> new EntityNotFoundException("Categoria não encontrada"));
 
         Transaction transaction = new Transaction(
@@ -33,10 +39,13 @@ public class TransactionService {
                 dto.getDate(),
                 dto.getDescription()
         );
-        return transactionRepository.save(transaction);
+        transaction = transactionRepository.save(transaction);
+
+        BigDecimal saldoAtualizado = calcularSaldo();
+        return new TransactionWithBalance(transaction, saldoAtualizado);
     }
 
-    public Transaction update(Long id, TransactionDTO dto) {
+    public TransactionWithBalance update(Long id, TransactionDTO dto) {
         Transaction transaction = transactionRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Transação não encontrada"));
 
@@ -49,14 +58,20 @@ public class TransactionService {
         transaction.setDate(dto.getDate());
         transaction.setDescription(dto.getDescription());
 
-        return transactionRepository.save(transaction);
+        transaction = transactionRepository.save(transaction);
+
+        BigDecimal saldoAtualizado = calcularSaldo();
+        return new TransactionWithBalance(transaction, saldoAtualizado);
     }
 
-    public void delete(Long id) {
+    public BigDecimal delete(Long id) {
         if (!transactionRepository.existsById(id)) {
             throw new EntityNotFoundException("Transação não encontrada");
         }
+
         transactionRepository.deleteById(id);
+
+        return calcularSaldo();
     }
 
     public List<Transaction> list() {
@@ -67,4 +82,22 @@ public class TransactionService {
         return transactionRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Transação não encontrada"));
     }
+
+    public BigDecimal calcularSaldo() {
+        List<Transaction> transactionList = transactionRepository.findAll();
+
+        BigDecimal income = BigDecimal.ZERO;
+        BigDecimal outcome = BigDecimal.ZERO;
+
+        for (Transaction transaction : transactionList) {
+            if (transaction.getType() == RECEITA) {
+                income = income.add(BigDecimal.valueOf(transaction.getAmount()));
+            } else if (transaction.getType() == DESPESA) {
+                outcome = outcome.add(BigDecimal.valueOf(transaction.getAmount()));
+            }
+        }
+
+        return income.subtract(outcome).setScale(2, RoundingMode.HALF_UP);
+    }
 }
+

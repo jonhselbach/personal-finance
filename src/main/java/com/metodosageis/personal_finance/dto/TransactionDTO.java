@@ -17,7 +17,7 @@ public class TransactionDTO {
     private TransactionType type;
 
     @NotNull(message = "Categoria é obrigatória")
-    private Long categoryId;
+    private Long idcategory;
 
     @NotNull(message = "Data é obrigatória")
     private LocalDate date;

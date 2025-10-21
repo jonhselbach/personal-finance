@@ -36,8 +36,8 @@ class CategoriaIntegrationTest {
         Category salva = service.createCategory(categoria);
 
         assertThat(salva.getId()).isNotNull();
-        assertThat(salva.getNome()).isEqualTo("EducacaoTeste");
-        assertThat(salva.getLimiteGastos()).isEqualTo(500.0);
+        assertThat(salva.getName()).isEqualTo("EducacaoTeste");
+        assertThat(salva.getSpendingLimit()).isEqualTo(500.0);
     }
 
     @Test
@@ -61,6 +61,6 @@ class CategoriaIntegrationTest {
 
         Category atualizada = service.updateLimit(salva.getId(), 600.0);
 
-        assertThat(atualizada.getLimiteGastos()).isEqualTo(600.0);
+        assertThat(atualizada.getSpendingLimit()).isEqualTo(600.0);
     }
 }

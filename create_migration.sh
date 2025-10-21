@@ -15,19 +15,18 @@ FORMATTED_NAME=$(echo "$NAME" | tr '[:upper:]' '[:lower:]' | tr ' ' '_')
 # Data/hora no formato AAAAMMDD_HHMM
 TIMESTAMP=$(date +"%Y%m%d_%H%M")
 
-# Caminho fixo para a raiz do projeto, independentemente de onde o script é executado
+# Caminho baseado no próprio diretório do script
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
+PROJECT_ROOT="$SCRIPT_DIR"
 MIGRATIONS_DIR="${PROJECT_ROOT}/src/main/resources/db/migration"
 
 # Nome final do arquivo
 FILENAME="${MIGRATIONS_DIR}/V${TIMESTAMP}__${FORMATTED_NAME}.sql"
 
-# Cria o arquivo
+# Cria o diretório de migrations (caso não exista)
 mkdir -p "$MIGRATIONS_DIR"
-touch "$FILENAME"
 
-# Escreve cabeçalho
+# Cria o arquivo e adiciona cabeçalho
 {
   echo "-- Migration: $NAME"
   echo "-- Criado em: $(date)"

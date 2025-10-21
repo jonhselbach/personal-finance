@@ -4,6 +4,7 @@ import com.metodosageis.personal_finance.dto.CategoryDTO;
 import com.metodosageis.personal_finance.model.Category;
 import com.metodosageis.personal_finance.service.CategoryService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -54,11 +55,11 @@ public class CategoryController {
             @PathVariable Long id,
             @RequestBody Map<String, Double> body
     ) {
-        if (!body.containsKey("limite_gastos")) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Campo 'limite_gastos' é obrigatório");
+        if (!body.containsKey("spendingLimit")) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Campo 'spendingLimit' é obrigatório");
         }
 
-        Double newLimit = body.get("limite_gastos");
+        Double newLimit = body.get("spendingLimit");
         return ResponseEntity.ok(service.updateLimit(id, newLimit));
     }
 

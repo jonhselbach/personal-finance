@@ -52,7 +52,7 @@ public class CategoryService {
     public Category updateLimit(Long id, Double novoLimite) {
         Category category = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Categoria não encontrada"));
-        category.setLimiteGastos(novoLimite);
+        category.setSpendingLimit(novoLimite);
         return repository.save(category);
     }
 }

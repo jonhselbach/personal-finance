@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "categoria")
+@Table(name = "category")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,9 +18,9 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "tipo_categoria", nullable = false, unique = true, length = 50)
-    private String nome;
+    @Column(name = "type_category", nullable = false, unique = true, length = 50)
+    private String name;
 
-    @Column(name = "limite_gastos", nullable = false)
-    private Double limiteGastos;
+    @Column(name = "limit_spent", nullable = false)
+    private Double spendingLimit;
 }

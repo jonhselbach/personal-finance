@@ -1,7 +1,6 @@
 -- Migration: alter table category
 -- Criado em: Mon Oct 20 20:50:17 -03 2025
 
-DROP TABLE categoria;
 
 CREATE TABLE category (
     id BIGSERIAL PRIMARY KEY,

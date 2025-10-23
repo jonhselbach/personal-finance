@@ -1,6 +1,7 @@
 package com.metodosageis.personal_finance.service;
 
 import com.metodosageis.personal_finance.dto.TransactionDTO;
+import com.metodosageis.personal_finance.enums.TransactionType;
 import com.metodosageis.personal_finance.model.Category;
 import com.metodosageis.personal_finance.model.Transaction;
 import com.metodosageis.personal_finance.repository.CategoryRepository;
@@ -8,6 +9,7 @@ import com.metodosageis.personal_finance.repository.TransactionRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -66,5 +68,20 @@ public class TransactionService {
     public Transaction getById(Long id) {
         return transactionRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Transação não encontrada"));
+    }
+
+    public Double calculateBalance() {
+
+        Double expense = transactionRepository.findByType(TransactionType.EXPENSE)
+                .stream()
+                .reduce(0.00, (accumulator, value) -> accumulator + value.getAmount(), Double::sum);
+
+        Double income = transactionRepository.findByType(TransactionType.INCOME)
+                .stream()
+                .reduce(0.00, (accumulator, value) ->
+                        accumulator + value.getAmount(), Double::sum
+                );
+
+        return income - expense;
     }
 }

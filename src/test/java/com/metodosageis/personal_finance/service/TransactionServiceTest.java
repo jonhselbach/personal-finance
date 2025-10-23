@@ -153,4 +153,46 @@ public class TransactionServiceTest {
         verify(transactionRepository, never()).deleteById(any());
     }
 
+    // 9️⃣ Calcular saldo (income - expense)
+    @Test
+    void deveCalcularSaldoCorretamente() {
+        // 🧾 Simula transações de despesa
+        Transaction expense1 = new Transaction(1L, 100.0, TransactionType.EXPENSE, category,
+                LocalDate.of(2025, 10, 21), "Supermercado");
+        Transaction expense2 = new Transaction(2L, 50.0, TransactionType.EXPENSE, category,
+                LocalDate.of(2025, 10, 22), "Transporte");
+
+        // 💰 Simula transações de receita
+        Transaction income1 = new Transaction(3L, 500.0, TransactionType.INCOME, category,
+                LocalDate.of(2025, 10, 23), "Salário");
+
+        // 🔧 Mocka o repositório
+        when(transactionRepository.findByType(TransactionType.EXPENSE))
+                .thenReturn(List.of(expense1, expense2));
+
+        when(transactionRepository.findByType(TransactionType.INCOME))
+                .thenReturn(List.of(income1));
+
+        // 🚀 Executa
+        Double saldo = transactionService.calculateBalance();
+
+        // 🧠 Verifica se o saldo é (500 - (100 + 50)) = 350
+        assertThat(saldo).isEqualTo(350.0);
+
+        // ✅ Verifica se chamou os métodos corretamente
+        verify(transactionRepository, times(1)).findByType(TransactionType.EXPENSE);
+        verify(transactionRepository, times(1)).findByType(TransactionType.INCOME);
+    }
+
+    // 🔟 Calcular saldo quando não há transações
+    @Test
+    void deveRetornarZeroQuandoNaoHaTransacoes() {
+        when(transactionRepository.findByType(TransactionType.EXPENSE)).thenReturn(List.of());
+        when(transactionRepository.findByType(TransactionType.INCOME)).thenReturn(List.of());
+
+        Double saldo = transactionService.calculateBalance();
+
+        assertThat(saldo).isEqualTo(0.0);
+    }
+
 }

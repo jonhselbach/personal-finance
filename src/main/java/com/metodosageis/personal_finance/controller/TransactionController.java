@@ -49,4 +49,11 @@ public class TransactionController {
         Transaction transaction = service.getById(id);
         return ResponseEntity.ok(transaction);
     }
+
+    @GetMapping("/balance")
+    public ResponseEntity<Double> getBalance() {
+
+        return ResponseEntity.status(HttpStatus.OK).body(service.calculateBalance());
+
+    }
 }

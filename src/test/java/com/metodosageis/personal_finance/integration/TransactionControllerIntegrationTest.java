@@ -128,4 +128,32 @@ class TransactionControllerIntegrationTest {
 
         assertThat(transactionRepository.findById(transaction.getId())).isEmpty();
     }
+
+    // 6️⃣ Calcular saldo (GET /transacoes/balance)
+    @Test
+    void deveCalcularSaldoCorretamente() throws Exception {
+        // 💰 Receita: 500
+        transactionRepository.save(new Transaction(
+                null, 500.0, TransactionType.INCOME, category,
+                LocalDate.of(2025, 10, 21), "Salário"
+        ));
+
+        // 💸 Despesa: 200 + 50 = 250
+        transactionRepository.save(new Transaction(
+                null, 200.0, TransactionType.EXPENSE, category,
+                LocalDate.of(2025, 10, 22), "Supermercado"
+        ));
+        transactionRepository.save(new Transaction(
+                null, 50.0, TransactionType.EXPENSE, category,
+                LocalDate.of(2025, 10, 23), "Transporte"
+        ));
+
+        // 🚀 Faz requisição GET
+        mockMvc.perform(get("/transacoes/balance"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                // 🧠 Verifica saldo (500 - 250 = 250)
+                .andExpect(content().string("250.0"));
+    }
+
 }

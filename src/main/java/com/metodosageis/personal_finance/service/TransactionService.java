@@ -22,16 +22,16 @@ public class TransactionService {
     }
 
     public Transaction create(TransactionDTO dto) {
-        Category category = categoryRepository.findById(dto.getIdcategory())
+        Category category = categoryRepository.findById(dto.idcategory())
                 .orElseThrow(() -> new EntityNotFoundException("Categoria não encontrada"));
 
         Transaction transaction = new Transaction(
                 null,
-                dto.getAmount(),
-                dto.getType(),
+                dto.amount(),
+                dto.type(),
                 category,
-                dto.getDate(),
-                dto.getDescription()
+                dto.date(),
+                dto.description()
         );
         return transactionRepository.save(transaction);
     }
@@ -40,14 +40,14 @@ public class TransactionService {
         Transaction transaction = transactionRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Transação não encontrada"));
 
-        Category category = categoryRepository.findById(dto.getIdcategory())
+        Category category = categoryRepository.findById(dto.idcategory())
                 .orElseThrow(() -> new EntityNotFoundException("Categoria não encontrada"));
 
-        transaction.setAmount(dto.getAmount());
-        transaction.setType(dto.getType());
+        transaction.setAmount(dto.amount());
+        transaction.setType(dto.type());
         transaction.setCategory(category);
-        transaction.setDate(dto.getDate());
-        transaction.setDescription(dto.getDescription());
+        transaction.setDate(dto.date());
+        transaction.setDescription(dto.description());
 
         return transactionRepository.save(transaction);
     }

@@ -45,14 +45,14 @@ public class TransactionServiceTest {
         category = new Category(1L, "Alimentação", 500.0);
 
         transaction = new Transaction(
-                1L, 200.0, TransactionType.DESPESA, category,
+                1L, 200.0, TransactionType.EXPENSE, category,
                 LocalDate.of(2025, 10, 21), "Supermercado"
         );
 
         dto = new TransactionDTO(
                 1L,
                 200.0,
-                TransactionType.DESPESA,
+                TransactionType.EXPENSE,
                 1L,
                 LocalDate.of(2025, 10, 21),
                 "Supermercado"

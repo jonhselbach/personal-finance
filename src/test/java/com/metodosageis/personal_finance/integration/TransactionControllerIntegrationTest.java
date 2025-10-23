@@ -51,7 +51,7 @@ class TransactionControllerIntegrationTest {
     @Test
     void deveCriarTransacao() throws Exception {
         TransactionDTO dto = new TransactionDTO(
-                null, 200.0, TransactionType.DESPESA,
+                null, 200.0, TransactionType.EXPENSE,
                 category.getId(), LocalDate.of(2025, 10, 21), "Supermercado"
         );
 
@@ -69,7 +69,7 @@ class TransactionControllerIntegrationTest {
     // 2️⃣ Listar transações
     @Test
     void deveListarTransacoes() throws Exception {
-        Transaction transaction = new Transaction(null, 150.0, TransactionType.DESPESA, category,
+        Transaction transaction = new Transaction(null, 150.0, TransactionType.EXPENSE, category,
                 LocalDate.of(2025, 10, 21), "Padaria");
         transactionRepository.save(transaction);
 
@@ -83,7 +83,7 @@ class TransactionControllerIntegrationTest {
     @Test
     void deveBuscarTransacaoPorId() throws Exception {
         Transaction transaction = transactionRepository.save(
-                new Transaction(null, 120.0, TransactionType.RECEITA, category,
+                new Transaction(null, 120.0, TransactionType.INCOME, category,
                         LocalDate.of(2025, 10, 21), "Salário")
         );
 
@@ -97,12 +97,12 @@ class TransactionControllerIntegrationTest {
     @Test
     void deveAtualizarTransacao() throws Exception {
         Transaction transaction = transactionRepository.save(
-                new Transaction(null, 50.0, TransactionType.DESPESA, category,
+                new Transaction(null, 50.0, TransactionType.EXPENSE, category,
                         LocalDate.of(2025, 10, 21), "Café")
         );
 
         TransactionDTO dtoAtualizado = new TransactionDTO(
-                transaction.getId(), 60.0, TransactionType.DESPESA,
+                transaction.getId(), 60.0, TransactionType.EXPENSE,
                 category.getId(), LocalDate.of(2025, 10, 22), "Café da manhã"
         );
 
@@ -119,7 +119,7 @@ class TransactionControllerIntegrationTest {
     @Test
     void deveDeletarTransacao() throws Exception {
         Transaction transaction = transactionRepository.save(
-                new Transaction(null, 80.0, TransactionType.DESPESA, category,
+                new Transaction(null, 80.0, TransactionType.EXPENSE, category,
                         LocalDate.of(2025, 10, 21), "Lanche")
         );
 

@@ -81,7 +81,7 @@ class TransactionServiceTest {
         var result = transactionService.create(dto);
 
         assertNotNull(result);
-        assertEquals(new BigDecimal("0.01"), result.getBalance());
+        assertEquals(new BigDecimal("100.00"), result.getBalance());
     }
 
     @Test

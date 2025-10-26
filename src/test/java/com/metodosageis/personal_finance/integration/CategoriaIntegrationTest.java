@@ -50,7 +50,7 @@ class CategoriaIntegrationTest {
         List<Category> categorias = service.listCategory();
 
         assertThat(categorias).hasSize(2);
-        assertThat(categorias).extracting("nome")
+        assertThat(categorias).extracting("name")
                 .containsExactlyInAnyOrder("AlimentacaoTeste", "TransporteTeste");
     }
 

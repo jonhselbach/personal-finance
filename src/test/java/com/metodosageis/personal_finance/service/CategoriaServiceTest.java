@@ -35,8 +35,8 @@ class CategoriaServiceTest {
         Category criada = service.createCategory(categoria);
 
         assertNotNull(criada.getId());
-        assertEquals("Educação", criada.getNome());
-        assertEquals(500.0, criada.getLimiteGastos());
+        assertEquals("Educação", criada.getName());
+        assertEquals(500.0, criada.getSpendingLimit());
         verify(repository).save(categoria);
     }
 
@@ -52,7 +52,7 @@ class CategoriaServiceTest {
 
         assertFalse(categorias.isEmpty());
         assertEquals(2, categorias.size());
-        assertEquals("Alimentação", categorias.get(0).getNome());
+        assertEquals("Alimentação", categorias.get(0).getName());
     }
 
     @Test
@@ -63,7 +63,7 @@ class CategoriaServiceTest {
 
         Category atualizada = service.updateLimit(1L, 600.0);
 
-        assertEquals(600.0, atualizada.getLimiteGastos());
+        assertEquals(600.0, atualizada.getSpendingLimit());
         verify(repository).save(existente);
     }
 }

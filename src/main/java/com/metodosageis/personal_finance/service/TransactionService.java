@@ -49,7 +49,7 @@ public class TransactionService {
         Transaction transaction = transactionRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Transação não encontrada"));
 
-        Category category = categoryRepository.findById(dto.getIdcategory())
+        Category category = categoryRepository.findById(dto.getCategoryId())
                 .orElseThrow(() -> new EntityNotFoundException("Categoria não encontrada"));
 
         transaction.setAmount(dto.getAmount());
